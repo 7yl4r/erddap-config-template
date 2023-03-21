@@ -6,8 +6,19 @@ Template repository containing boilerplate ERDDAP configuration including:
 * [docker-erddap](https://hub.docker.com/r/axiom/docker-erddap/) docker-compose.yml to run it all on a container easily
 
 # (1) Workflow
-## (1.1) Dataset editing:
+## (1.0) Initial setup:
+0. create new repo using 7yl4r/erddap-config-template as the github template
+1. modify the following files to fit your organization's settings
+  1. `_pre.xml` : this is the header section of `datasets.xml`
+  2. `setup.xml`
+  3. `web.xml`
+  4. `/images/erddapStart2.css`
+2. enable github actions in the settings of your repo
+3. set up datasets as described in workflow below
+
+### (1.1) Dataset editing:
 1. modify dataset files in `/datasets/` dir
+    * NOTE: the `dataset.xml` file is the only file that matters to ERDDAP. A `README.md` and other files can be included for human convenience.
 2. erddap-datasets-xml-builder will run to `datasets.xml` and commit it to github.
 3. pull the new datasets.xml onto your erddap server (if using docker a `docker-compose restart` is not needed)
     * NOTE: A linux ERDDAP server can be set to do automatically using `cron`.[^1]
@@ -17,7 +28,7 @@ NOTE: in the docs below:
       `${HOSTNAME}` is the name of the dockerhost system.
       `${USERNAME}` is your username (must have docker permissions).
 
-### (1.2) Adding a new DataSet Checklist:
+## (1.2) Adding a new DataSet Checklist:
 1. create a file in this repo `/datasets/{dataset_name}/README.md` where `{dataset_name}` is the name you have chosen for your dataset; try to follow the patterns of existing dataset names in `/datasets/`.
 1. create a file `/datasets/{dataset_name}/dataset.xml`:
     1. connect to docker host:
@@ -30,7 +41,7 @@ NOTE: in the docs below:
         1. change the name in the xml to match your chosen `dataset_name`  
 1. see the `Dataset editing (1.1)` section above to finish applying the changes
 
-### checking for errors on the ERDDAP server
+## (1.3) checking for errors on the ERDDAP server:
 1. look at `{erddap_server_url/status.html` to see a list of datasets that are failing
 1. search the `/erddapdata/logs/log.txt` for errors related to your dataset
 1. run `DasDds` to find errors

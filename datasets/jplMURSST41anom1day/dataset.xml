@@ -1,0 +1,3 @@
+<dataset type="EDDGridFromErddap" datasetID="jplMURSST41anom1day" active="true">
+    <sourceUrl>https://coastwatch.pfeg.noaa.gov/erddap/griddap/jplMURSST41anom1day</sourceUrl>
+</dataset>

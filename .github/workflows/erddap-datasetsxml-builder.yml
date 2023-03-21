@@ -1,0 +1,69 @@
+# This is a basic workflow to help you get started with Actions
+
+name: build_datasets_xml
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the "master" branch
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v3
+
+      - name: create ERDDAP datasets.xml from erddap-config/datasets/
+        uses: 7yl4r/erddap-datasetsxml-builder@latest
+        with:
+          # Path to /datasets/ directory relative to project root.
+          datasets_dir: ./ # optional, default is ./
+          
+      - name: Add & Commit
+        uses: EndBug/add-and-commit@v9.1.1
+        with:
+          add: datasets.xml
+          # The name of the user that will be displayed as the author of the commit
+          author_name: erddap_config_buildbot # optional
+          # The email of the user that will be displayed as the author of the commit
+          author_email: erddap_config_buildbot@tylar.info # optional
+          # The name of the custom committer you want to use
+          #committer_name: # optional
+          # The email of the custom committer you want to use
+          #committer_email: # optional
+          # The directory where your repository is located. You should use actions/checkout first to set it up
+          #cwd: # optional, default is .
+          # How the action should fill missing author name or email.
+          #default_author: # optional, default is github_actor
+          # Arguments for the git fetch command (if 'false', the action won't fetch the repo)
+          #fetch: # optional, default is --tags --force
+          # The message for the commit
+          message: 'create datasets.xml from collection of dataset.xml files' # optional
+          # The name of the branch to create.
+          #new_branch: # optional
+          # The way the action should handle pathspec errors from the add and remove commands.
+          #pathspec_error_handling: # optional, default is ignore
+          # Arguments for the git pull command. By default, the action does not pull.
+          #pull: # optional
+          # Whether to push the commit and, if any, its tags to the repo. It can also be used to set the git push arguments (more info in the README)
+          #push: # optional, default is true
+          # Arguments for the git rm command
+          #remove: # optional
+          # Arguments for the git tag command (the tag name always needs to be the first word not preceded by a hyphen)
+          #tag: # optional
+          # Arguments for the git push --tags command (any additional argument will be added after --tags)
+          #tag_push: # optional
+          # The token used to make requests to the GitHub API. It's NOT used to make commits and should not be changed.
+          #github_token: # optional, default is ${{ github.token }}

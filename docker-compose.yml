@@ -1,0 +1,21 @@
+---
+version: '3.3'
+
+services:
+  # docker run -d -p 8080:8080 --name erddap axiom/docker-erddap -e ERDDAP_MEMORY=64G --volumes ...
+  erddap:
+    container_name: erddap
+    user: 0:4504  # root:imars-common
+    restart: unless-stopped
+    ports:
+      - 8080:8080
+    environment:
+      - ERDDAP_MEMORY=64G  # default is 4G
+    image: axiom/docker-erddap
+    volumes:
+      # erddap content incl. setup.xml & dataset.xml :
+      - '/root/docker_volumes/erddap-config:/usr/local/tomcat/content/erddap'
+      # modified tomcat web.xml :
+      - '/root/docker_volumes/erddap-config/web.xml:/usr/local/tomcat/conf/web.xml'
+
+
